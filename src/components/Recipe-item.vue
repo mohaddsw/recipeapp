@@ -1,123 +1,89 @@
 <template>
   <div class="recipe-foods">
     <h1>Food Recipes</h1>
-
-    <div class="recipe-items">
-      <div class="item" @click="openRecipe">
+   <div class="recipe-items">
+         <router-link  class="item"
+        @click="openRecipe(recipe)"
+        v-for="recipe in recipe_results"
+        :key="recipe.id" :to="'/recipe/'+recipe.id">
+      <div>
         <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
+          <img :src="recipe.img" alt="" />
         </div>
 
         <div class="food-recipe">
           <div class="food-title">
-            <h3>Food title</h3>
+            <h3>{{ recipe.title }}</h3>
           </div>
           <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
+            {{ recipe.detail }}
           </p>
         </div>
       </div>
-      <div class="item" @click="openRecipe">
-        <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
-        </div>
-
-        <div class="food-recipe">
-          <div class="food-title">
-            <h3>Food title</h3>
-          </div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
-          </p>
-        </div>
-      </div>
-      <div class="item" @click="openRecipe">
-        <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
-        </div>
-
-        <div class="food-recipe">
-          <div class="food-title">
-            <h3>Food title</h3>
-          </div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
-          </p>
-        </div>
-      </div>
-
-
-       <div class="item" @click="openRecipe">
-        <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
-        </div>
-
-        <div class="food-recipe">
-          <div class="food-title">
-            <h3>Food title</h3>
-          </div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
-          </p>
-        </div>
-      </div>
-      <div class="item" @click="openRecipe">
-        <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
-        </div>
-
-        <div class="food-recipe">
-          <div class="food-title">
-            <h3>Food title</h3>
-          </div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
-          </p>
-        </div>
-      </div>
-      <div class="item" @click="openRecipe">
-        <div class="img-food">
-          <img src="../assets/image/banner.jpg" alt="" />
-        </div>
-
-        <div class="food-recipe">
-          <div class="food-title">
-            <h3>Food title</h3>
-          </div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque
-            quia magni necessitatibus facere asperiores distinctio si
-          </p>
-        </div>
-      </div>
-     
+       </router-link>
+       <router-view></router-view>
+       
     </div>
-     <!-- show recipe diolog -->
-      <recipe @showDialog="close($event)" :openDialog="show_recipe_dialog" />
+   
+
+    
+    <!-- show recipe diolog -->
+    <!-- <recipe
+      :recipe="recipe_prop"
+      @showDialog="close($event)"
+      :openDialog="show_recipe_dialog"
+    /> -->
   </div>
 </template>
 <script>
-import recipe from './Food-recipe'
+// import recipe from './Food-recipe'
 export default {
   components: {
-    recipe,
+    // recipe,
   },
   data() {
     return {
       show_recipe_dialog: false,
+      recipe_results: [],
+      recipe_prop: null,
     }
   },
   methods: {
-    openRecipe: function () {
+    openRecipe: function (recipe) {
       this.show_recipe_dialog = true
+      this.recipe_prop = recipe
     },
     close(event) {
       this.show_recipe_dialog = event
+    },
+    manage_data(res) {
+      this.recipe_results = []
+      res.map((recipe) => {
+        let data = {}
+        data.id = recipe.id
+        data.title = recipe.title
+        data.img = recipe.image
+        if (recipe.instructions) {
+          data.detail = recipe.instructions
+        } else {
+          data.detail =
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        }
+
+        this.recipe_results.push(data)
+      })
+    },
+  },
+  computed: {
+    food_results() {
+      return this.$store.getters['get_food_data_results']()
+    },
+  },
+  watch: {
+    food_results: function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.manage_data(newVal)
+      }
     },
   },
 }
@@ -144,7 +110,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
-  padding: 30px 0;
+  padding: 30px 0 100px 0;
 }
 
 .recipe-foods .recipe-items .item {
@@ -235,6 +201,8 @@ export default {
   position: relative;
 }
 .recipe-foods .recipe-items .item .food-recipe p {
-  padding: 20px 0;
+  padding: 50px 20px;
+  max-height: 180px;
+  overflow: hidden;
 }
 </style>

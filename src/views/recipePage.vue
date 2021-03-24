@@ -1,56 +1,65 @@
 <template>
-  <div v-show="openDialog" class="recipe">
-    <section>
+   <div  class="recipePage">
+
+         <div class="recipe">
+<section>
       <header>
-        <h1 class="food-title">{{ recipe_props.title }}</h1>
+        <h1 class="food-title">title {{id}}</h1>
       </header>
       <article>
-        <img :src="recipe_props.img" alt="" />
+        <img src="" alt="" />
         <p>
-          {{ recipe_props.detail }}
+         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem aliquam magni libero fugiat saepe nihil voluptas doloribus, commodi quis hic sequi consequatur impedit molestias ut delectus ducimus eaque quam architecto.
         </p>
       </article>
       <footer>
         <span @click="close"> close </span>
       </footer>
     </section>
+         </div>
+     
+    
   </div>
+ 
 </template>
 
 <script>
+
 export default {
-  props: ['openDialog', 'recipe'],
+     
   data() {
     return {
-      recipe_props: {},
+      id: this.$route.params.recipeId,
     }
   },
-  methods: {
-    close: function () {
-      this.$emit('showDialog', false)
-    },
-  },
-  watch: {
-    recipe: function (newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.recipe_props = newVal
-      }
-    },
-  },
+  methods:{
+      close:function(){
+      this.$router.push('/')
+  }
 }
+  }
 </script>
 
 <style scoped>
+.recipePage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fff;
+  z-index: 9999;
+  width: 100%;
+  height: 96%;
+  padding-top: 10%;
+  
+
+}
+
 .recipe {
-  max-width: 90%;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    width: 90%;
+    margin: auto;
   background-color: #f2f2f0;
   padding: 50px;
-  border-radius: 50px;
-  box-shadow: 0px 0px 100px 20px#D97C2B;
+  border-radius: 5px;
   border: 1px solid #d97c2b;
 }
 
@@ -89,4 +98,6 @@ span {
   color: #fff;
   cursor: pointer;
 }
+
+
 </style>

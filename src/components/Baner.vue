@@ -6,8 +6,8 @@
     </div>
     <div class="bannerSearch">
       <form class="searchFood">
-        <input type="text" placeholder="Food Name" />
-        <span class="button">
+        <input v-model="searchValue" type="text" placeholder="Food Name" />
+        <span @click="search_food" class="button">
           <mdicon name="magnify" />
         </span>
       </form>
@@ -16,7 +16,21 @@
 </template>
 
 <script>
-export default {}
+import getSearchDataResults from '../mixins/data.js'
+export default {
+  data(){
+    return{
+      searchValue:"",
+      searchReasult:[]
+    }
+  },
+  mixins:[getSearchDataResults],
+  methods: {
+    search_food: function () {
+      this.getSearchDataResults(this.searchValue);
+    },
+  },
+}
 </script>
 
 <style scoped>
