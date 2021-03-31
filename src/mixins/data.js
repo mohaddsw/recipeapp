@@ -9,7 +9,7 @@ export default {
     getSearchDataResults(foodName) {
       axios
         .get(
-          'https://api.spoonacular.com/recipes/complexSearch?apiKey=e5d2cb21ed164c038349089b8a14d873' +
+          'https://api.spoonacular.com/recipes/complexSearch?apiKey=e5d2cb21ed164c038349089b8a14d873&query=' +
             foodName +
             '&number=4'
         )
@@ -24,9 +24,8 @@ export default {
         this.random_recipe.push(recipe)
       })
     },
-  },
-  created() {
-    axios
+    getAllResults(){
+      axios
       .get(
         'https://api.spoonacular.com/recipes/random?apiKey=e5d2cb21ed164c038349089b8a14d873&number=4'
       )
@@ -34,5 +33,14 @@ export default {
         this.generateRandomRecipe(res.data.recipes)
         this.$store.dispatch('set_food_data_results', this.random_recipe)
       })
+      .catch(err=>{
+        console.log(err)
+      })
+
+    }
+  },
+  created() {
+    this.getAllResults()
+   
   },
 }

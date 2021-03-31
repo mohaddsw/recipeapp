@@ -195,6 +195,7 @@ export default {
   padding: 10px 0;
   color: #f2f2f0;
   background-color: #d97c2b;
+  font-size: 15px;
 }
 .recipe-foods .recipe-items .item .food-recipe {
   padding: 15px;
@@ -204,5 +205,9 @@ export default {
   padding: 50px 20px;
   max-height: 180px;
   overflow: hidden;
+}
+a.item{
+  text-decoration: none;
+      color: #000;
 }
 </style>
